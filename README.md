@@ -6,7 +6,7 @@
 
 This action…
 
-- Installs Snapcraft on Ubuntu 18.04+/macOS
+- Installs Snapcraft on Ubuntu 20.04+/macOS
 - Optionally logs you in to the Snap Store
 - Allows you to run Snapcraft commands in your GitHub Actions workflows
 
@@ -40,7 +40,7 @@ jobs:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_TOKEN }}
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v2
@@ -86,13 +86,11 @@ Finally, add the following option to your workflow step:
 
 ### Build using LXD
 
-Using `runs-on: ubuntu-20.04` or later, LXD is availabe by default. If using `runs-on: ubuntu-18.04`, LXD can be installed as shown below. This is an alternative to using `multipass` (GitHub VMs give the error `launch failed: CPU does not support KVM extensions.` when trying to use `multipass`).
+LXD is available by default on `ubuntu-20.04` and later. To build your snap using LXD:
 
 ```yml
-- name: Install Snapcraft with LXD
+- name: Install Snapcraft
   uses: samuelmeuli/action-snapcraft@v2
-  with:
-    use_lxd: ${{ matrix.os == 'ubuntu-18.04' }}
 - name: Build snap
   run: sg lxd -c 'snapcraft --use-lxd'
 ```
