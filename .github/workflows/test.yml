@@ -67,14 +67,3 @@ jobs:
         run: |
           snap info snapcraft
           grep -Eq 'tracking:\s+latest/candidate' <(snap info snapcraft)
-
-  # Install with lxd
-  lxd:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v5
-      - name: Run action
-        uses: ./
-      - name: lxd should be installed
-        run: "/snap/bin/lxd version"

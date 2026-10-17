@@ -29,25 +29,9 @@ const getPlatform = () => {
  * Installs Snapcraft on Linux
  */
 const runLinuxInstaller = () => {
-	// TODO: Remove setting up lxd once the `use-lxd` input is removed
-	// as lxd is available on the latest ubuntu by default
-	// tag: deprecate_use_lxd
-	const useLxd = process.env.INPUT_USE_LXD === "true";
-	const lxdNotInstalled = process.env.ImageOS === "ubuntu18";
-	const setupLxd = useLxd && lxdNotInstalled;
-
 	run(`sudo snap install snapcraft --classic --channel ${process.env.INPUT_CHANNEL}`);
-	if (setupLxd) {
-		run("sudo snap install lxd");
-		run(`sudo usermod --append --groups lxd ${process.env.USER}`);
-	}
 	run(`echo /snap/bin >> ${process.env.GITHUB_PATH}`); // Add `/snap/bin` to PATH for subsequent actions
 	run("sudo chown root:root /"); // Fix root ownership
-	if (setupLxd) {
-		run("sudo /snap/bin/lxd.migrate -yes");
-		run("sudo /snap/bin/lxd waitready");
-		run("sudo /snap/bin/lxd init --auto");
-	}
 };
 
 /**
